@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "support ticket app",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "start": "node backend/server.js",
-    "sever": "nodemon backend/server.js"
+    "server": "nodemon backend/server.js"
   },
   "author": "Kheng",
   "license": "MIT",
@@ -14,7 +15,9 @@
     "colors": "^1.4.0",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
-    "mongoose": "^8.8.0"
+    "express-async-handler": "^1.2.0",
+    "mongoose": "^8.8.0",
+    "supportdesk": "file:"
   },
   "devDependencies": {
     "nodemon": "^3.1.7"
