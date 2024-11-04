@@ -1,8 +1,13 @@
 import express from "express";
+import colors from "colors";
 import dotenv from "dotenv/config";
 import router from "./routes/userRoutes.js";
 import { errorHandler } from "./middleware/errorMiddleware.js";
+import { connectDB } from "./config/db.js";
 const PORT = process.env.PORT || 8000;
+
+// Connect to database
+connectDB();
 
 const app = express();
 
@@ -15,7 +20,7 @@ app.get("/", (req, res) => {
 
 //Routes
 app.use("/api/users", router);
-app.use(errorHandler)
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
