@@ -46,7 +46,7 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new console.error("Fail to register");
   }
 
-  res.send("Register Route");
+ 
 });
 
 // @desc Login User
