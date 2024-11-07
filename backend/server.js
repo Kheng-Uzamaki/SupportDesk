@@ -1,7 +1,8 @@
 import express from "express";
 import colors from "colors";
 import dotenv from "dotenv/config";
-import router from "./routes/userRoutes.js";
+import userRouter from "./routes/userRoutes.js";
+import ticketRouter from "./routes/ticketRoute.js";
 import { errorHandler } from "./middleware/errorMiddleware.js";
 import { connectDB } from "./config/db.js";
 import cors from "cors"; // Import CORS
@@ -13,7 +14,6 @@ connectDB();
 
 const app = express();
 
-
 app.use(cors({ origin: "http://localhost:3000" }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -23,7 +23,8 @@ app.get("/", (req, res) => {
 });
 
 //Routes
-app.use("/api/users", router);
+app.use("/api/users", userRouter);
+app.use("/api/tickets", ticketRouter);
 app.use(errorHandler);
 
 app.listen(PORT, () => {
