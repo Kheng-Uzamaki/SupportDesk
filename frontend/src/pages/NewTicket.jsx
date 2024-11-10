@@ -1,20 +1,54 @@
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { createTicket, reset } from "../features/tickets/ticketSlice";
+import Spinner from "../components/Spinner";
+import BackButton from "../components/BackButton";
 
 const NewTicket = () => {
   const { user } = useSelector((state) => state.auth);
+
+  const { isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.tickets
+  );
 
   const [name] = useState(user.name);
   const [email] = useState(user.email);
   const [product, setProduct] = useState("iPhone");
   const [description, setDescription] = useState("");
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+    if (isSuccess) {
+      navigate("/tickets");
+    }
+    return () => dispatch(reset());
+  }, [dispatch, isError, navigate, isSuccess, message]);
+
   const onSubmit = (e) => {
     e.preventDefault();
+    dispatch(createTicket({ product, description }))
+      .unwrap()
+      .then(() => {
+        // We got a good response so navigate the user
+        navigate("/tickets");
+        toast.success("New ticket created!");
+      })
+      .catch(toast.error);
   };
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <>
+      <BackButton url={"/"} />
       <section className="heading">
         <h1>Create New Ticket</h1>
         <p>Please fill out the form below</p>
@@ -38,11 +72,11 @@ const NewTicket = () => {
               value={product}
               onChange={(e) => setProduct(e.target.value)}
             >
+              {/* "iPhone", "Macbook Pro", "iMac", "ipad" */}
               <option value="iPhone">iPhone</option>
-              <option value="iPad">iPad</option>
-              <option value="iWatch">iWatch</option>
-              <option value="MacBook">MacBook</option>
-              <option value="Other">Other</option>
+              <option value="ipad">ipad</option>
+              <option value="Macbook Pro">Macbook Pro</option>
+              <option value="iMac">iMac</option>
             </select>
           </div>
           <div className="form-group">
@@ -56,7 +90,9 @@ const NewTicket = () => {
             ></textarea>
           </div>
           <div className="form-group">
-            <button className="btn btn-block">Submit</button>
+            <button type="submit" className="btn btn-block">
+              Submit
+            </button>
           </div>
         </form>
       </section>

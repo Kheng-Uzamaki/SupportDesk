@@ -6,11 +6,15 @@ import ticketRouter from "./routes/ticketRoute.js";
 import { errorHandler } from "./middleware/errorMiddleware.js";
 import { connectDB } from "./config/db.js";
 import cors from "cors"; // Import CORS
+import mongoose from "mongoose";
 
 const PORT = process.env.PORT || 8000;
 
+mongoose.set("debug", true);
 // Connect to database
 connectDB();
+
+
 
 const app = express();
 

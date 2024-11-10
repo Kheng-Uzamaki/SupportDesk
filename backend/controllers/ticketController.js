@@ -8,11 +8,6 @@ import Ticket from "../models/ticketModel.js";
 const getTickets = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id);
 
-  if (!user) {
-    res.status(404);
-    throw new Error("User not found!");
-  }
-
   const tickets = await Ticket.find({ user: req.user.id });
   res.status(200).json(tickets);
 });
@@ -53,6 +48,8 @@ const createTicket = asyncHandler(async (req, res) => {
     throw new Error("Product and description are required!");
   }
 
+  console.log("Received create ticket request:", req.body); // Log request data
+
   const user = await User.findById(req.user.id);
 
   if (!user) {
@@ -67,8 +64,11 @@ const createTicket = asyncHandler(async (req, res) => {
     status: "new",
   });
 
+  console.log("Ticket successfully created:", ticket); // Log created ticket
+
   res.status(201).json(ticket);
 });
+
 
 // @desc Delete ticket
 // @route DELETE /api/tickets/:id
@@ -128,5 +128,6 @@ const updateTicket = asyncHandler(async (req, res) => {
 
   res.status(200).json(updatedTicket);
 });
+
 
 export { getTickets, createTicket, getTicket, updateTicket, deleteTicket };
