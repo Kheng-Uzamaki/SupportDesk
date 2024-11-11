@@ -9,6 +9,9 @@ import {
 } from "../controllers/ticketController.js";
 const ticketRouter = express.Router();
 
+import noteRouter from "./noteRoute.js";
+
+ticketRouter.use("/:ticketId/notes", noteRouter);
 ticketRouter.route("/").get(protect, getTickets).post(protect, createTicket);
 
 ticketRouter
